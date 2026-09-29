@@ -3,9 +3,9 @@ from django.db import models
 # Create your models here.
 
 class Playlist(models.Model):
-    playlist_id = models.CharField(max_length=22, unique=True),
-    nombre = models.CharField(max_length=300),
-    genero = models.CharField(max_length=50),
+    playlist_id = models.CharField(max_length=22, unique=True)
+    nombre = models.CharField(max_length=300)
+    genero = models.CharField(max_length=50)
     subgenero = models.CharField(max_length=80)
 
     def __str__(self):
