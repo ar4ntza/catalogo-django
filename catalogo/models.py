@@ -28,4 +28,9 @@ class Cancion(models.Model):
         verbose_name_plural = "canciones"
 
     def __str__(self):
-        return f"{self.titulo} ({self.artista})"
+        return self.titulo
+
+    @property
+    def duracion(self):
+        minutos, segundos = divmod(self.duracion_ms // 1000, 60)
+        return f"{minutos}:{segundos:02d}"

@@ -1,0 +1,46 @@
+<!-- catalogo/templates/catalogo/lista.html -->
+{% extends "catalogo/base.html" %}
+
+{% block contenido %}
+<form method="get">
+    <input type="text" name="q" value="{{ q }}" placeholder="Título o artista">
+    <select name="genero">
+        <option value="">Todos los géneros</option>
+        {% for g in generos %}
+            <option value="{{ g }}" {% if g == genero %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Buscar</button>
+</form>
+
+<p>{{ total }} resultados{% if total > 25 %}, se muestran los primeros 25{% endif %}.</p>
+
+<table>
+    <tr><th>Título</th><th>Artista</th><th>Duración</th><th>Popularidad</th></tr>
+    {% for c in canciones %}
+    <tr>
+        <td><a href="{% url 'catalogo:detalle' c.pk %}">{{ c.titulo }}</a></td>
+        <td>{{ c.artista }}</td>
+        <td>{{ c.duracion }}</td>
+        <td>{{ c.popularidad }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No hay canciones que coincidan.</td></tr>
+    {% endfor %}
+</table>
+
+{% if canciones.paginator.num_pages > 1 %}
+<div class="paginacion">
+    {% if canciones.has_previous %}
+        <a href="?q={{ q|urlencode }}&page={{ canciones.previous_page_number }}">Anterior</a>
+    {% endif %}
+
+    <span>Página {{ canciones.number }} de {{ canciones.paginator.num_pages }}</span>
+
+    {% if canciones.has_next %}
+        <a href="?q={{ q|urlencode }}&page={{ canciones.next_page_number }}">Siguiente</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
